@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_grap"
+            app:startDestination="@id/store">
+
+    <fragment android:id="@+id/store" android:name="com.example.fashionmen.fragments.catalog.FragmentCatalog"
+              android:label="fragment_main" tools:layout="@layout/fragment_catalogo"/>
+    <fragment android:id="@+id/cesta" android:name="com.example.fashionmen.fragments.cart.FragmentCart"
+              android:label="fragment_cesta_fragment" tools:layout="@layout/fragment_cesta"/>
+    <fragment
+            android:id="@+id/loginFragment" android:name="com.example.fashionmen.fragments.account.FragmentLogin"
+            android:label="fragment_login" tools:layout="@layout/fragment_login" />
+</navigation>

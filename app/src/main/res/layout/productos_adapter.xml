@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/producto"
+        android:layout_width="160dp"
+        android:layout_height="250dp"
+        android:layout_margin="18dp"
+        app:cardCornerRadius="2dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:elevation="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/productImg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="Here photo of product"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/guideline25"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorCard"
+                app:layout_constraintTop_toTopOf="@+id/guideline25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/nameProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:padding="3dp"
+                    android:gravity="bottom"
+                    android:textColor="@color/colorWhite"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="9sp"
+                    app:autoSizeMaxTextSize="15sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/guideline26"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline27"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/priceProducto"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="top"
+                    android:padding="3dp"
+                    android:textColor="@color/colorWhite"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeMaxTextSize="19sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline26"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline27"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/moreInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/ic_more_vert_black_24dp"
+                    app:layout_constraintStart_toStartOf="@id/guideline27"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/guideline26"
+                    app:layout_constraintGuide_percent="0.5"
+                    android:orientation="horizontal"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.80"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/guideline25"
+                app:layout_constraintGuide_percent="0.74"
+                android:orientation="horizontal"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FashionMen</string>
+
+    <!-- Login -->
+    <string name="mensaje_bienvenida">FashionMen</string>
+    <string name="inciar_sesion">Iniciar sesión</string>
+    <string name="nombre_usuario">Nombre de usuario</string>
+    <string name="passwd">Contraseña</string>
+    <string name="btn_iniciar">Entrar</string>
+    <string name="btn_join">Registrarse</string>
+
+    <!-- Catalogo -->
+    <string name="store_tab">Tienda</string>
+    <string name="carrito_tab">Cesta</string>
+    <string name="profile_tab">Perfil</string>
+
+    <string name="hint_search">Buscar</string>
+
+    <!-- Detalle Producto -->
+    <string name="botonAñadirCesta">Añadir a la cesta</string>
+    <string name="botonComprar">Comprar ahora</string>
+
+    <!-- Registro -->
+    <string name="hintNif">NIF/NIE</string>
+    <string name="hintName">Nombre de usuario</string>
+    <string name="hintFirtsLastName">Nombre completo</string>
+    <string name="hintEmail">Email</string>
+    <string name="hintPass">Contraseña</string>
+    <string name="hintDate">Fecha nacimiento</string>
+    <string name="hintDirection">Dirección</string>
+
+    <string name="btnEnviar">Enviar</string>
+    <string name="btnCerrar">Cerrar</string>
+
+    <string name="error">Campo obligatorio</string>
+
+    <!-- Perfil -->
+    <string name="setting_btn">Configuración</string>
+    <string name="lista_btn">Lista de pedidos</string>
+    <string name="nosotros_btn">Sobre nosotros</string>
+    <string name="termino_btn">Terminos y condiciones</string>
+    <string name="cerrar_btn">Cerrar sesión</string>
+    
+    <string name="cambiarNombre">Cambiar nombre de usuario</string>
+    <string name="cambiarContraseña">Cambiar contraseña</string>
+    <string name="cambiarDireccion">Cambiar dirección</string>
+
+    <string name="opcionCambiarNombre1">Nombre de  usuario actual</string>
+    <string name="opcionCambiarNombre2">Nombre de  usuario nuevo</string>
+
+    <string name="opcionCambiarPass1">Contraseña actual</string>
+    <string name="opcionCambiarPass2">Contraseña nuevo</string>
+
+    <string name="opcionCambiarDireccion">Nueva dirección</string>
+
+    <string name="sobreNosotrosText">FashionMen consiste en una tienda de moda para hombres, únicamente accesible desde esta aplicación.</string>
+
+    <string name="cancelOption">Cancelar</string>
+    
+    <!-- Compra realizada -->
+    <string name="titulo_compra">Se ha realizado la compra satisfactoriamente</string>
+    <string name="agradecimiento">Gracias por confiar en nosotros</string>
+    <string name="btn_regreso">Volver</string>
+</resources>
