@@ -11,11 +11,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.example.fashionmen.AuthDataSingleton
 import com.example.fashionmen.ServicesFragment
 import com.example.fashionmen.R
@@ -26,7 +21,6 @@ import com.example.fashionmen.models.viewmodels.LoginViewModel
 import com.example.fashionmen.models.viewmodels.RegisterViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 
@@ -84,7 +78,7 @@ class FragmentLogin : ServicesFragment() {
         enterButtom = view.findViewById(R.id.enter)
         enterButtom.setOnClickListener {
             if (checkFieldFillLogin())
-                validationUser()
+                signIn()
         }
 
         /* Registro */
@@ -102,7 +96,7 @@ class FragmentLogin : ServicesFragment() {
         sendButton = view.findViewById(R.id.boton_enviar)
         sendButton.setOnClickListener {
             if (checkFieldFill())
-                pushRequest()
+                signUp()
         }
 
         closeButton = view.findViewById(R.id.boton_cerrar)
@@ -139,7 +133,7 @@ class FragmentLogin : ServicesFragment() {
         tituloLogin.startAnimation(fadeIn)
     }
 
-    private fun validationUser() {
+    private fun signIn() {
 
         enterButtom.startAnimation(fadeOut)
         enterButtom.visibility = View.INVISIBLE
@@ -178,7 +172,8 @@ class FragmentLogin : ServicesFragment() {
         })
     }
 
-    private fun pushRequest(){
+
+    private fun signUp(){
         sendButton.startAnimation(fadeOut)
         sendButton.visibility = View.INVISIBLE
         pushProgres.visibility = View.VISIBLE
@@ -195,6 +190,9 @@ class FragmentLogin : ServicesFragment() {
             nifText, userNameText, passwordText, nameText, emailText, directionText
         ))
 
+        /*
+        * Register request
+        * */
         registerCall.enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.v("retrofit1", t!!.message)

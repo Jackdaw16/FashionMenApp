@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,22 +13,21 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.example.fashionmen.AppConfiguration
 import com.example.fashionmen.AuthDataSingleton
 import com.example.fashionmen.models.User
 
 import com.example.fashionmen.R
+import com.example.fashionmen.ServicesFragment
 import com.example.fashionmen.dialog.DialogAboutUs
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
-import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class FragmentAccount : Fragment() {
+class FragmentAccount : ServicesFragment() {
     private lateinit var mainLayout: LinearLayout
     private lateinit var settingLayout: LinearLayout
     private lateinit var changeInfoUserUI: LinearLayout
@@ -54,12 +53,12 @@ class FragmentAccount : Fragment() {
 
     /*Data utils*/
     private lateinit var user: User
-    private lateinit var configuration: AppConfiguration
 
     private var param: String = String()
 
     private lateinit var fadeIn: Animation
     private lateinit var fadeOut: Animation
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_cuenta, container, false)
@@ -68,15 +67,14 @@ class FragmentAccount : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configuration = AppConfiguration()
-        obtenerCargarUsuario(context!!)
+        user = AuthDataSingleton.loggedUser.user
 
         mainLayout = view.findViewById(R.id.main_layout)
         settingLayout = view.findViewById(R.id.layout_settings)
         changeInfoUserUI = view.findViewById(R.id.dinamicUI)
 
         nombreUsuario = view.findViewById(R.id.nombre_usuario_profile)
-        nombreUsuario.text = user.nombreCompleto
+        nombreUsuario.text = user.nombre_completo
 
         mainOptionAssign(view)
         settingsOptionAssign(view)
@@ -91,10 +89,6 @@ class FragmentAccount : Fragment() {
 
         fadeIn = AnimationUtils.loadAnimation(context!!, R.anim.fade_in)
         fadeOut = AnimationUtils.loadAnimation(context, R.anim.fade_out)
-    }
-
-    private fun obtenerCargarUsuario(context: Context) {
-        user = AuthDataSingleton.loggedUser.user
     }
 
     private fun showAndHiddeSettings(){
@@ -136,7 +130,7 @@ class FragmentAccount : Fragment() {
 
     private fun fillFields(titleOldField: String, titleNewField: String, isHidden: Boolean, isPass: Boolean){
         if (isHidden){
-            param = "direccion"
+            param = "direction"
             layoutOldField.visibility = View.GONE
             newField.hint = titleNewField
         } else {
@@ -147,11 +141,11 @@ class FragmentAccount : Fragment() {
             if (isPass){
                 oldFiled.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 newField.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                param = "passwd"
+                param = "password"
             } else {
                 oldFiled.inputType = InputType.TYPE_CLASS_TEXT
                 newField.inputType = InputType.TYPE_CLASS_TEXT
-                param = "nombre_usuario"
+                param = "userName"
             }
 
         }
@@ -163,8 +157,8 @@ class FragmentAccount : Fragment() {
 
         btnAboutUs = view.findViewById(R.id.btn_aboutUs)
         btnAboutUs.setOnClickListener {
-            val dialogoSobreNosotros = DialogAboutUs()
-            dialogoSobreNosotros.show(fragmentManager!!, null)
+            val aboutUsDialog = DialogAboutUs()
+            aboutUsDialog.show(fragmentManager!!, null)
         }
 
         btnClose = view.findViewById(R.id.btn_out)
@@ -197,58 +191,57 @@ class FragmentAccount : Fragment() {
     }
 
     private fun validateInformation(param: String){
-        /*if (param.equals(constantes.sixthParamUser)){
-            usuarioJson.remove(constantes.sixthParamUser)
-            usuarioJson.put(constantes.sixthParamUser, newField.text.toString())
-            updateRequest(usuarioJson)
-
-        } else if (param.equals(constantes.secondParamUser)) {
-            if (oldFiled.text!!.toString().equals(user.nombre_usuario)){
-                usuarioJson.remove(constantes.secondParamUser)
-                usuarioJson.put(constantes.secondParamUser, newField.text.toString())
-                updateRequest(usuarioJson)
-            }else{
-                return
+        if (param.equals("direction")) {
+            user.direccion = newField.text.toString()
+            updateRequest()
+        } else if (param.equals("password")) {
+            if (oldFiled.text.toString() == user.passwd) {
+                user.passwd = newField.text.toString()
+                updateRequest()
+            } else {
+                oldFiled.error = getString(R.string.passwordinvalid)
             }
 
-        } else if (param.equals(constantes.thirdParamUser)) {
-            if (oldFiled.text!!.toString().equals(user.passwd)){
-                Log.d("Seguimiento", "Entro aqui")
-                usuarioJson.remove(constantes.thirdParamUser)
-                usuarioJson.put(constantes.thirdParamUser, newField.text.toString())
-                updateRequest(usuarioJson)
-            }else{
-                return
+        } else if (param.equals("userName")) {
+            if (oldFiled.text.toString() == user.nombre_usuario){
+                user.nombre_usuario = newField.text.toString()
+                updateRequest()
+            } else {
+                oldFiled.error = getString(R.string.usernameinvalid)
             }
-        }*/
+        } else {
+            return
+        }
     }
 
-    private fun updateRequest(usuarioUpdated: JSONObject){
-        val requestQueue = Volley.newRequestQueue(context)
-        val dniId = user.id
-        val url = "http://192.168.220.193/app_fashionmen_sw/public/usuarios/$dniId"
+    private fun updateRequest(){
+        val updateUserData = userService.updateDataUser(user.id, user)
 
-        val putRequest = JsonObjectRequest(Request.Method.PUT, url, usuarioUpdated,
-            Response.Listener {response ->
-                configuration.guardarUsuario(response.toString(), context!!)
-                obtenerCargarUsuario(context!!)
+        updateUserData.enqueue(object : Callback<User>{
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.d("retrofit", t.message)
+            }
 
-                oldFiled.text!!.clear()
-                newField.text!!.clear()
-            },
-            Response.ErrorListener {
-                Log.d("ERROR", "No funciono")
-            })
-        requestQueue.add(putRequest)
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.code() == 200){
+                    AuthDataSingleton.loggedUser.user = response.body()!!
+                    Log.d("retrofit", Gson().toJson(response.body()))
+                } else {
+                    Log.d("retrofit", Gson().toJson(response.message()))
+                }
+            }
+
+        })
     }
 
     private fun getOutProfile(){
+        AuthDataSingleton.loggedUser.accessToken = ""
+        //AuthDataSingleton.loggedUser.user = null
         val fragmentManager = fragmentManager!!.beginTransaction()
         val loginFragment = FragmentLogin()
 
         fragmentManager.replace(R.id.nav_host_fragment, loginFragment)
         fragmentManager.addToBackStack(null)
         fragmentManager.commit()
-        configuration.borrarDatosUsuario(context!!)
     }
 }

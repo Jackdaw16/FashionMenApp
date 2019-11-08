@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.perfil -> {
-                    if (AuthDataSingleton.loggedUser.accessToken.isEmpty()) {
+                    if (AuthDataSingleton.loggedUser == null) {
                         val fragment: Fragment = FragmentLogin()
                         changeFragment(fragment, FRAGMENTLOGIN)
                     } else {

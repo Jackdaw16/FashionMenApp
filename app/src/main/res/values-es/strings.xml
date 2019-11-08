@@ -57,7 +57,9 @@
     <string name="sobreNosotrosText">FashionMen consiste en una tienda de moda para hombres, únicamente accesible desde esta aplicación.</string>
 
     <string name="cancelOption">Cancelar</string>
-    
+
+    <string name="usernameinvalid">No coincide con el nombre de usuario actual</string>
+    <string name="passwordinvalid">No coincide con la contraseña actual</string>
     <!-- Compra realizada -->
     <string name="titulo_compra">Se ha realizado la compra satisfactoriamente</string>
     <string name="agradecimiento">Gracias por confiar en nosotros</string>

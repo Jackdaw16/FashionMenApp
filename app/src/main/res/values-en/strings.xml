@@ -58,6 +58,9 @@
 
     <string name="cancelOption">Cancel</string>
 
+    <string name="usernameinvalid">Does not match the current username</string>
+    <string name="passwordinvalid">Does not match the current password</string>
+
     <!-- Compra realizada -->
     <string name="titulo_compra">The purchase has been made successfully</string>
     <string name="agradecimiento">Thanks for trusting us</string>

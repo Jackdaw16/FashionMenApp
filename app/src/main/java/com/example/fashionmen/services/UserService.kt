@@ -5,9 +5,8 @@ import com.example.fashionmen.models.viewmodels.LoggedUser
 import com.example.fashionmen.models.viewmodels.LoginViewModel
 import com.example.fashionmen.models.viewmodels.RegisterViewModel
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
+import retrofit2.http.PATCH as PATCH1
 
 interface UserService {
 
@@ -17,4 +16,6 @@ interface UserService {
     @POST("usuarios")
     fun register(@Body registerInfo: RegisterViewModel): Call<User>
 
+    @PUT("usuarios/{id}")
+    fun updateDataUser(@Path("id") userId : Int, @Body user: User): Call<User>
 }
