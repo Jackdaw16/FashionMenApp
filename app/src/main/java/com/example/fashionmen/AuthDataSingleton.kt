@@ -14,4 +14,5 @@ object AuthDataSingleton {
                 .putString("loggedUser", Gson().toJson(value))
                 .apply()
         }
+
 }

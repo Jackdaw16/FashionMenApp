@@ -1,24 +1,14 @@
 package com.example.fashionmen.activities.productDetail
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
-import com.android.volley.RequestQueue
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
-import com.example.fashionmen.AppConfiguration
-import com.example.fashionmen.models.Order
-import com.example.fashionmen.ProductUtils
 import com.example.fashionmen.R
 import com.example.fashionmen.models.Product
-import org.json.JSONObject
 
 class ActivityProductDetail : AppCompatActivity() {
 
@@ -39,7 +29,6 @@ class ActivityProductDetail : AppCompatActivity() {
     private var bundleKey: String = "product"
     private var delimiter: String = ","
     private var contador: Int = 1
-    private var productUtils: ProductUtils = ProductUtils()
     private lateinit var elementoSeleccionado: String
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,8 +20,10 @@ import com.example.fashionmen.AuthDataSingleton
 import com.example.fashionmen.ServicesFragment
 import com.example.fashionmen.R
 import com.example.fashionmen.activities.Main.MainActivity
+import com.example.fashionmen.models.User
 import com.example.fashionmen.models.viewmodels.LoggedUser
 import com.example.fashionmen.models.viewmodels.LoginViewModel
+import com.example.fashionmen.models.viewmodels.RegisterViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import org.json.JSONObject
@@ -32,7 +34,6 @@ import retrofit2.Callback
  * A simple [Fragment] subclass.
  */
 class FragmentLogin : ServicesFragment() {
-
     /*Wigets*/
 
     /*Login*/
@@ -63,6 +64,10 @@ class FragmentLogin : ServicesFragment() {
     private lateinit var fadeIn: Animation
     private lateinit var fadeOut: Animation
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -71,6 +76,7 @@ class FragmentLogin : ServicesFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /* Login */
         tituloLogin = view.findViewById(R.id.tituloLogin)
         usernameLogin = view.findViewById(R.id.username_login)
         passLogin = view.findViewById(R.id.pass_login)
@@ -81,6 +87,7 @@ class FragmentLogin : ServicesFragment() {
                 validationUser()
         }
 
+        /* Registro */
         panelRegistro = view.findViewById(R.id.panelRegistro)
         tituloSecundario = view.findViewById(R.id.tituloSecundario)
         nifField = view.findViewById(R.id.nif_field)
@@ -95,7 +102,7 @@ class FragmentLogin : ServicesFragment() {
         sendButton = view.findViewById(R.id.boton_enviar)
         sendButton.setOnClickListener {
             if (checkFieldFill())
-                pushRequest(context!!)
+                pushRequest()
         }
 
         closeButton = view.findViewById(R.id.boton_cerrar)
@@ -144,6 +151,9 @@ class FragmentLogin : ServicesFragment() {
 
         val loginCall = userService.login(LoginViewModel(userNameText, passText))
 
+        /*
+        * Login request
+        *  */
         loginCall.enqueue(object : Callback<LoggedUser> {
             override fun onFailure(call: Call<LoggedUser>?, t: Throwable?) {
                 Log.v("retrofit", t!!.message)
@@ -159,47 +169,50 @@ class FragmentLogin : ServicesFragment() {
                     (activity as MainActivity).changeFragment(fragmentAccount, "")
                 } else {
                     Log.d("retrofit", Gson().toJson(response.message()))
+                    loginProgressBar.startAnimation(fadeOut)
+                    loginProgressBar.visibility = View.INVISIBLE
+                    enterButtom.startAnimation(fadeIn)
+                    enterButtom.visibility = View.VISIBLE
                 }
             }
         })
     }
 
-    private fun pushRequest(context: Context){
+    private fun pushRequest(){
         sendButton.startAnimation(fadeOut)
         sendButton.visibility = View.INVISIBLE
         pushProgres.visibility = View.VISIBLE
         pushProgres.startAnimation(fadeIn)
 
-        val requestQueue: RequestQueue = Volley.newRequestQueue(context)
-        val url = "http://192.168.220.193:5000/api/usuarios"
-        val newUser = JSONObject()
+        val nifText = nifField.text.toString()
+        val userNameText = nameField.text.toString()
+        val nameText = lastNameField.text.toString()
+        val emailText = emailField.text.toString()
+        val passwordText = passField.text.toString()
+        val directionText = directionField.text.toString()
 
-        /*newUser.put(constantes.firstParamUser, nifField.text)
-        newUser.put(constantes.secondParamUser, nameField.text)
-        newUser.put(constantes.thirdParamUser, passField.text)
-        newUser.put(constantes.quarterParamUser, lastNameField.text)
-        newUser.put(constantes.fifthParamUser, emailField.text)
-        newUser.put(constantes.sixthParamUser, directionField.text)*/
+        val registerCall = userService.register(RegisterViewModel(
+            nifText, userNameText, passwordText, nameText, emailText, directionText
+        ))
 
-        val jsonRequest = JsonObjectRequest(Request.Method.POST, url, newUser,
-            Response.Listener { response ->
+        registerCall.enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.v("retrofit1", t!!.message)
+            }
 
-                pushProgres.startAnimation(fadeOut)
-                pushProgres.visibility = View.INVISIBLE
-                succesfulTask.visibility = View.VISIBLE
-                succesfulTask.startAnimation(fadeIn)
+            override fun onResponse(call: Call<User>, response: retrofit2.Response<User>) {
+                if (response.code() == 201){
+                    pushProgres.startAnimation(fadeOut)
+                    pushProgres.visibility = View.INVISIBLE
+                    succesfulTask.visibility = View.VISIBLE
+                    succesfulTask.startAnimation(fadeIn)
+                } else {
+                    Log.d("retrofit2", Gson().toJson(response.message()))
+                }
+            }
 
-            },
-
-            Response.ErrorListener { error ->
-
-                //Log.d("VolleyPush", error.message)
-            })
-
-        requestQueue.add(jsonRequest)
+        })
     }
-
-
 
     private fun checkFieldFill(): Boolean{
         if(nifField.text!!.isEmpty()){
@@ -234,10 +247,8 @@ class FragmentLogin : ServicesFragment() {
             return false
         } else if (passLogin.text!!.isEmpty()){
             errorEditText(passLogin)
-
             return false
         }
-
         return true
     }
 

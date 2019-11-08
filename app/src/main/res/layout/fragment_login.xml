@@ -195,7 +195,7 @@
                 android:background="@color/colorPrimary"
                 android:elevation="4dp"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"

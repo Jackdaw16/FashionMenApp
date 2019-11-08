@@ -2,8 +2,10 @@ package com.example.fashionmen.activities.Main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.fashionmen.AppConfiguration
+import com.example.fashionmen.AuthDataSingleton
 import com.example.fashionmen.R
 import com.example.fashionmen.fragments.catalog.FragmentCatalog
 import com.example.fashionmen.fragments.cart.FragmentCart
@@ -46,8 +48,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.perfil -> {
-                    val usuario = configuracion.getUsuarioGuardado(context = this)
-                    if (usuario.isEmpty()) {
+                    if (AuthDataSingleton.loggedUser.accessToken.isEmpty()) {
                         val fragment: Fragment = FragmentLogin()
                         changeFragment(fragment, FRAGMENTLOGIN)
                     } else {

@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fashionmen.models.Product
-import com.example.fashionmen.ProductUtils
 import com.example.fashionmen.R
 import com.example.fashionmen.activities.productDetail.ActivityProductDetail
 
@@ -49,7 +48,6 @@ class AdapterCatalog(private val ListaProductos: List<Product>?): RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product: Product = ListaProductos?.get(position)!!
-        val funcion = ProductUtils()
         val precioConSimbolo = product.precio.toString() + "€"
 
         //holder.imageProduct.setImageBitmap(funcion.decodeBase64(product.img))

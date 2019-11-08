@@ -20,7 +20,7 @@ class AppConfiguration {
     fun getUsuarioGuardado(context: Context): String {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(preferencesKey, 0)
 
-        return sharedPreferences.getString(stringKeyUser, "").toString()
+        return sharedPreferences.getString("loggedUser", "").toString()
     }
 
     fun borrarDatosUsuario(context: Context) {
